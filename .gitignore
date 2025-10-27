@@ -1,0 +1,23 @@
+# ambiente
+.env
+
+# tokens e credenciais sensíveis
+token.json
+firebase_token.json
+app/config/
+app/config/*.json
+
+# arquivos Python compilados
+__pycache__/
+*.pyc
+
+# node
+node_modules/
+desafio_verzel/node_modules/
+
+# arquivos temporários do VSCode e sistema
+.vscode/
+.DS_Store
+
+# arquivo principal que não precisa ser versionado
+app/main.py
