@@ -165,4 +165,48 @@ class GoogleCalendar():
         
         return event
     
-    
+    def get_available_slots(self, days_ahead: int = 7) -> list[dict]:
+        """
+        Retorna blocos de 1 hora disponíveis (como objetos datetime)
+        dentro do horário comercial nos próximos dias.
+        Ideal para uso ao agendar reuniões.
+        """
+        now = datetime.datetime.now(datetime.timezone.utc)
+        end = now + datetime.timedelta(days=days_ahead)
+        busy_periods = self.get_busy(now, end)
+
+        slots = []
+        start_hour = 9
+        end_hour = 18
+
+        # Converter períodos ocupados para datetime (para comparação)
+        busy_intervals = []
+        for b in busy_periods:
+            start = datetime.datetime.fromisoformat(b["start"].replace("Z", "+00:00"))
+            end = datetime.datetime.fromisoformat(b["end"].replace("Z", "+00:00"))
+            busy_intervals.append((start, end))
+
+        current_day = now.date()
+        while current_day <= end.date():
+            for hour in range(start_hour, end_hour):
+                slot_start = datetime.datetime.combine(
+                    current_day,
+                    datetime.time(hour, 0),
+                    tzinfo=datetime.timezone.utc
+                )
+                slot_end = slot_start + datetime.timedelta(hours=1)
+
+                # Ignorar horários no passado
+                if slot_start < now:
+                    continue
+
+                # Verifica conflito com períodos ocupados
+                conflict = any(bs < slot_end and be > slot_start for bs, be in busy_intervals)
+                if not conflict:
+                    slots.append({
+                        "start": slot_start,
+                        "end": slot_end
+                    })
+            current_day += datetime.timedelta(days=1)
+
+        return slots
