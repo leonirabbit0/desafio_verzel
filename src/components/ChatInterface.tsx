@@ -9,8 +9,6 @@ interface Message {
   content: string;
 }
 
-const API_BASE_URL = "https://verzel-backend-production.up.railway.app";
-
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -19,22 +17,17 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+
+  const API_BASE_URL = "https://verzel-backend-production.up.railway.app";
+
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Define a responsividade inicial
       setIsMobile(window.innerWidth < 768);
-      
-      // Listener para redimensionamento, se necessário
-      const handleResize = () => setIsMobile(window.innerWidth < 768);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
 
   useEffect(() => {
-    // ⚠️ ATENÇÃO: Se estiver usando o Firestore, você deve usar os métodos do Firebase aqui,
-    // e não o localStorage, para garantir a persistência correta e escalável.
-    // Mantendo o localStorage por enquanto, conforme seu código original.
     const initializeChat = async () => {
       let currentSessionId = localStorage.getItem("verzel_session_id");
 
@@ -48,7 +41,6 @@ export default function ChatInterface() {
       setSessionId(currentSessionId);
 
       try {
-        // Chamada para carregar mensagens (usando o endpoint de produção)
         const response = await fetch(
           `${API_BASE_URL}/get_messages?session_id=${currentSessionId}`
         );
@@ -90,19 +82,11 @@ export default function ChatInterface() {
     setInput("");
 
     try {
-      // Chamada para enviar mensagem (usando o endpoint de produção)
       const response = await fetch(
         `${API_BASE_URL}/input_message?message_received=${encodeURIComponent(
           input
         )}&session_id=${sessionId}`
       );
-      
-      // Verifica se a resposta foi bem-sucedida antes de tentar ler o JSON
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Erro HTTP: ${response.status}. Detalhes: ${errorText}`);
-      }
-      
       const data = await response.json();
 
       const assistantMessage: Message = {
@@ -112,11 +96,10 @@ export default function ChatInterface() {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      // Exibe uma mensagem de erro mais detalhada, incluindo o erro de servidor 500
       console.error("Erro ao conectar com API:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `Erro ao conectar com o servidor: ${error.message}` },
+        { role: "assistant", content: "Erro ao conectar com o servidor." },
       ]);
     }
   };
