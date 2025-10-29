@@ -6,6 +6,16 @@ Sistema de chatbot inteligente para agendamento automatizado de reuniões comerc
 
 O **Roberto** é um assistente virtual desenvolvido para a Verzel que automatiza todo o processo de qualificação de leads e agendamento de reuniões comerciais. Através de uma conversa natural e guiada, o bot coleta informações essenciais do cliente, verifica disponibilidade de horários, agenda a reunião no Google Calendar e cria um card no Pipefy para acompanhamento do time comercial.
 
+
+### 🌐 Demo Online
+
+O projeto está disponível online com os seguintes serviços:
+- **Frontend**: Hospedado na [Vercel](https://vercel.com)
+- **Backend (API)**: Hospedado no [Railway](https://railway.app)
+
+**🔗 Acesse a demo:** [https://desafio-verzel-m9k11wre3-elioenais-projects-3ad59b7b.vercel.app/](https://desafio-verzel-m9k11wre3-elioenais-projects-3ad59b7b.vercel.app/)
+
+
 ## 🚀 Funcionalidades
 
 - **Conversa Inteligente**: Fluxo conversacional natural guiado por IA (GPT-4)
