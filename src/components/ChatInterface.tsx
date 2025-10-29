@@ -9,7 +9,6 @@ interface Message {
   content: string;
 }
 
-// 🎯 O ENDPOINT DE PRODUÇÃO FOI DEFINIDO AQUI
 const API_BASE_URL = "https://verzel-backend-production.up.railway.app";
 
 export default function ChatInterface() {
